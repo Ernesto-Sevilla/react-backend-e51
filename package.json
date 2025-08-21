@@ -1,0 +1,16 @@
+{
+  "name": "backend-ferreteria-ernesto-2025",
+  "version": "1.0.0",
+  "description": "Backend de Ferretería Inglés",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "star": "node index.js"
+  },
+  "author": "Ernesto José Sevilla Inglés",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
