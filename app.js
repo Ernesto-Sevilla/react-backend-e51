@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 // Importar las rutas
-import rutasCategoria from "./src/routes/categoria.routes.js";
+import rutasCategoria from './src/routes/categorias.routes.js';
 
 //Crear la aplicacion de Express
 const app = express();
