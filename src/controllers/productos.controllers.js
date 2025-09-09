@@ -35,10 +35,10 @@ export const obtenerProductoPorId = async (req, res) => {
 // Registrar un nuevo Producto
 export const registrarProducto = async (req, res) => {
     try {
-        const { nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen} = req.body;
+        const { nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen} = req.body;
         const [result] = await pool.query(
-            'INSERT INTO Productos (nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen) VALUES (?, ?, ?, ?, ?, ?)',
-            [nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen]
+            'INSERT INTO Productos (nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen) VALUES (?, ?, ?, ?, ?, ?)',
+            [nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen]
         );
         res.status(201).json({ id_producto: result.insertId });
     } catch (error) {
