@@ -1,3 +1,4 @@
+import e from "express";
 import { pool } from "../../db_connection.js";
 
 // Obtener todas los productos
@@ -27,6 +28,23 @@ export const obtenerProductoPorId = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             mensaje: 'Ha ocurrido un error al leer los datos de los productos.'
+        });
+    }
+};
+
+// Registrar un nuevo Producto
+export const registrarProducto = async (req, res) => {
+    try {
+        const { nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen} = req.body;
+        const [result] = await pool.query(
+            'INSERT INTO Productos (nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen) VALUES (?, ?, ?, ?, ?, ?)',
+            [nombre_producto, descripcion_producto, id_categoria, precio_producto, stock, imagen]
+        );
+        res.status(201).json({ id_producto: result.insertId });
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ha ocurrido un error al registrar el producto.',
+            error: error
         });
     }
 };
