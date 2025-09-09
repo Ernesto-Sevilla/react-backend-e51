@@ -5,10 +5,46 @@ export const obtenerCategorias = async (req, res) => {
     try {
         const [result] = await pool.query("SELECT * FROM Categorias");
         res.json(result);
-    }catch (error) {
+    } catch (error) {
         return res.status(500).json({
             mensaje: "Ha ocurrido un error al leer los datos.",
             error: error
         });
     }
 }
+
+// Obtener una categoría por su ID
+export const obtenerCategoriaPorId = async (req, res) => {
+    try {
+        const id_categoria = req.params.id_categoria;
+        const [result] = await pool.query('SELECT * FROM categorias WHERE id_categoria = ?', [id_categoria]);
+        if (result.length <= 0) {
+            return res.status(404).json({
+                mensaje: `Error al leer los datos. ID ${req.params.id} no encontrado.`
+            });
+        }
+        res.json(result[0]);
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ha ocurrido un error al leer los datos de las categorias.'
+        });
+    }
+};
+
+// Crear una nueva categoría
+export const crearCategoria = async (req, res) => {
+    try {
+        const { nombre, descripcion } = req.body;
+        const [result] = await pool.query('INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)', [nombre, descripcion]);
+        res.json({
+            id_categoria: result.insertId,
+            nombre,
+            descripcion
+        });
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ha ocurrido un error al crear la categoría.',
+            error: error
+        });
+    }   
+};

@@ -12,3 +12,21 @@ export const obtenerCompras = async (req, res) => {
         });
     }
 }
+
+// Obtener una compra por su ID
+export const obtenerCompraPorId = async (req, res) => {
+    try {
+        const id_compra = req.params.id_compra;
+        const [result] = await pool.query('SELECT * FROM compras WHERE id_compra = ?', [id_compra]);
+        if (result.length <= 0) {
+            return res.status(404).json({
+                mensaje: `Error al leer los datos. ID ${req.params.id} no encontrado.`
+            });
+        }
+        res.json(result[0]);
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ha ocurrido un error al leer los datos de las compras.'
+        });
+    }
+};
