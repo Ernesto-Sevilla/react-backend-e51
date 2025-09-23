@@ -2,6 +2,7 @@ import { Router } from "express";
 import { obtenerClientes } from "../controllers/clientes.controllers.js";
 import { obtenerClientePorId } from "../controllers/clientes.controllers.js";
 import { registrarCliente } from "../controllers/clientes.controllers.js";
+import { eliminarCliente } from "../controllers/clientes.controllers.js";
 
 const router = Router();
 
@@ -13,5 +14,8 @@ router.get('/clientes/:id_cliente', obtenerClientePorId);
 
 // Ruta para registrar un nuevo cliente
 router.post('/registrarcliente', registrarCliente);
+
+// Ruta para eliminar un cliente por si ID
+router.delete("/eliminarcliente/:id_cliente", eliminarCliente);
 
 export default router;
