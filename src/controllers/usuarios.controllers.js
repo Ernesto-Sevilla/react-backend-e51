@@ -67,3 +67,53 @@ export const eliminarUsuario = async (req, res) => {
         });
     }
 };
+
+// Actualizar un usuario por su ID (PUT)
+export const actualizarUsuario = async (req, res) => {
+    try {
+        const id_usuario = req.params.id_usuario;
+        const { usuario, contraseña } = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Usuarios SET usuario = ?, contraseña = ? WHERE id_usuario = ?',
+            [usuario, contraseña, id_usuario]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el usuario. El ID " + id_usuario + " no fue encontrado."
+            });
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el usuario.",
+            error: error
+        });
+    }
+};
+
+// Actualizar parcialmente un usuario por su ID (PATCH)
+export const actualizarUsuarioPatch = async (req, res) => {
+    try {
+        const { id_usuario } = req.params;
+        const datos = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Usuarios SET ? WHERE id_usuario = ?',
+            [datos, id_usuario]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el usuario. El ID " + id_usuario + " no fue encontrado."
+            });
+        }
+        res.status(200).json({
+            mensaje: "Usuario con ID " + id_usuario + " actualizado exitosamente."
+        });
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el usuario.", error});
+    }
+};

@@ -3,6 +3,8 @@ import { obtenerCompraPorId } from "../controllers/compras.controllers.js";
 import { obtenerCompras } from "../controllers/compras.controllers.js";
 import { registrarCompra } from "../controllers/compras.controllers.js";
 import { eliminarCompra } from "../controllers/compras.controllers.js";
+import { actualizarCompra } from "../controllers/compras.controllers.js";
+import { actualizarCompraPatch } from "../controllers/compras.controllers.js";
 
 const router = Router();
 
@@ -17,5 +19,11 @@ router.post('/registrarcompra', registrarCompra);
 
 // Eliminar una compra por su ID
 router.delete("/eliminarcompra/:id_compra", eliminarCompra);
+
+// Ruta para actualizar una compra por su ID
+router.put("/actualizarcompra/:id_compra", actualizarCompra);
+
+// Ruta para actualizar una compra por su ID de forma parcial
+router.patch("/actualizarcomprapatch/:id_compra", actualizarCompraPatch);
 
 export default router;

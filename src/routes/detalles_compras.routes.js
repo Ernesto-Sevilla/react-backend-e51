@@ -3,6 +3,8 @@ import { obtenerDetallesCompras } from "../controllers/detalles_compras.controll
 import { obtenerDetalleCompraPorId } from "../controllers/detalles_compras.controllers.js";
 import { registrarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
 import { eliminarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
+import { actualizarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
+import { actualizarDetalleCompraPatch } from "../controllers/detalles_compras.controllers.js";
 
 const router = Router();
 
@@ -17,6 +19,12 @@ router.post('/registrardetallecompra', registrarDetalleCompra);
 
 // Ruta para eliminar un detalle de compra por su ID
 router.delete("/eliminardetallecompra/:id_detalle_compra", eliminarDetalleCompra);
+
+// Ruta para actualizar un detalle de compra por su ID
+router.put("/actualizardetallecompra/:id_detalle_compra", actualizarDetalleCompra);
+
+// Ruta para actualizar un detalle de compra por su ID de forma parcial
+router.patch("/actualizardetallecomprapatch/:id_detalle_compra", actualizarDetalleCompraPatch);
 
 
 export default router;

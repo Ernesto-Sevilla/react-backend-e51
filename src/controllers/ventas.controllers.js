@@ -67,3 +67,53 @@ export const eliminarVenta = async (req, res) => {
         });
     }
 };
+
+// Actualizar una venta por su ID (PUT)
+export const actualizarVenta = async (req, res) => {
+    try {
+        const id_venta = req.params.id_venta;
+        const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Ventas SET id_cliente = ?, id_empleado = ?, fecha_venta = ?, total_venta = ? WHERE id_venta = ?',
+            [id_cliente, id_empleado, fecha_venta, total_venta, id_venta]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar la venta. El ID " + id_venta + " no fue encontrado."
+            });
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar la venta.",
+            error: error
+        });
+    }
+};
+
+// Actualizar parcialmente una venta por su ID (PATCH)
+export const actualizarVentaPatch = async (req, res) => {
+    try {
+        const { id_venta } = req.params;
+        const datos = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Ventas SET ? WHERE id_venta = ?',
+            [datos, id_venta]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar la venta. El ID " + id_venta + " no fue encontrado."
+            });
+        }
+        res.status(200).json({
+            mensaje: "Venta con ID " + id_venta + " actualizada exitosamente."
+        });
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar la venta.", error});
+    }
+};

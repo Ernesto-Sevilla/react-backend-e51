@@ -67,3 +67,53 @@ export const eliminarEmpleado = async (req, res) => {
         });
     }   
 };
+
+// Actualizar un empleado por su ID (PUT)
+export const actualizarEmpleado = async (req, res) => {
+    try {
+        const id_empleado = req.params.id_empleado;
+        const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion } = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Empleados SET primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, celular = ?, cargo = ?, fecha_contratacion = ? WHERE id_empleado = ?',
+            [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion, id_empleado]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el empleado. El ID " + id_empleado + " no fue encontrado."
+            });
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el empleado.",
+            error: error
+        });
+    }
+};
+
+// Actualizar parcialmente un empleado por su ID (PATCH)
+export const actualizarEmpleadoPatch = async (req, res) => {
+    try {
+        const { id_empleado } = req.params;
+        const datos = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Empleados SET ? WHERE id_empleado = ?',
+            [datos, id_empleado]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el empleado. El ID " + id_empleado + " no fue encontrado."
+            });
+        }
+        res.status(200).json({
+            mensaje: "Empleado con ID " + id_empleado + " actualizado exitosamente."
+        });
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el empleado.", error});
+    }
+};

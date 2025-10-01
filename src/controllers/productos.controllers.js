@@ -68,3 +68,53 @@ export const eliminarProducto = async (req, res) => {
         });
     }
 };
+
+// Actualizar un producto por su ID (PUT)
+export const actualizarProducto = async (req, res) => {
+    try {
+        const id_producto = req.params.id_producto;
+        const { nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen } = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Productos SET nombre_producto = ?, descripcion_producto = ?, id_categoria = ?, precio_unitario = ?, stock = ?, imagen = ? WHERE id_producto = ?',
+            [nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen, id_producto]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el producto. El ID " + id_producto + " no fue encontrado."
+            });
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el producto.",
+            error: error
+        });
+    }
+};
+
+// Actualizar parcialmente un producto por su ID (PATCH)
+export const actualizarProductoPatch = async (req, res) => {
+    try {
+        const { id_producto } = req.params;
+        const datos = req.body;
+
+        const [result] = await pool.query(
+            'UPDATE Productos SET ? WHERE id_producto = ?',
+            [datos, id_producto]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "Error al actualizar el producto. El ID " + id_producto + " no fue encontrado."
+            });
+        }
+        res.status(200).json({
+            mensaje: "Producto con ID " + id_producto + " actualizado exitosamente."
+        });
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Ha ocurrido un error al actualizar el producto.", error});
+    }
+};
