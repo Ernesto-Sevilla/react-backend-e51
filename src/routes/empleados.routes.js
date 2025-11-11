@@ -13,7 +13,7 @@ const router = Router();
 router.get('/empleados', obtenerEmpleados);
 
 //Rutas para obtener un empleado por su ID
-router.get('/empleados/:id_empleado', obtenerEmpleadoPorId);
+router.get('/empleado/:id_empleado', obtenerEmpleadoPorId);
 
 // Ruta para registrar un nuevo empleado
 router.post('/registrarempleado', registrarEmpleado);

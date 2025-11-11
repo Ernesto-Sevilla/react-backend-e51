@@ -9,10 +9,10 @@ import { actualizarDetalleVentaPatch } from "../controllers/detalles_ventas.cont
 const router = Router();
 
 //Rutas para obtener todos los detalles de ventas
-router.get('/detalles_ventas', obtenerDetallesVentas);
+router.get('/detallesventas', obtenerDetallesVentas);
 
 //Rutas para obtener un detalle de venta por su ID
-router.get('/detalles_ventas/:id_detalle_venta', obtenerDetalleVentaPorId);
+router.get('/detallesventas/:id_detalle_venta', obtenerDetalleVentaPorId);
 
 // Ruta para registrar un nuevo detalle de venta
 router.post('/registrardetalleventa', registrarDetalleVenta);

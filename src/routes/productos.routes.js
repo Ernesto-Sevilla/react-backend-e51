@@ -12,7 +12,7 @@ const router = Router();
 router.get('/productos', obtenerProductos);
 
 //Rutas para obtener un producto por su ID
-router.get('/productos/:id_producto', obtenerProductoPorId);
+router.get('/producto/:id_producto', obtenerProductoPorId);
 
 // Ruta para registrar un nuevo producto
 router.post('/registrarproducto', registrarProducto);
