@@ -1,29 +1,21 @@
-import { Router } from "express";
-import { obtenerDetallesVentas } from "../controllers/detalles_ventas.controllers.js";
-import { obtenerDetalleVentaPorId } from "../controllers/detalles_ventas.controllers.js";
-import { registrarDetalleVenta } from "../controllers/detalles_ventas.controllers.js";
-import { eliminarDetalleVenta } from "../controllers/detalles_ventas.controllers.js";
-import { actualizarDetalleVenta } from "../controllers/detalles_ventas.controllers.js";
-import { actualizarDetalleVentaPatch } from "../controllers/detalles_ventas.controllers.js";
-
+import { Router } from 'express';
+import { obtenerDetalles_Ventas, obtenerDetalles_Venta, eliminarDetalle_Venta,  registrarDetalles_Venta, actualizarDetalle_Venta} from '../Controllers/detalles_ventas.controllers.js';
 const router = Router();
 
-//Rutas para obtener todos los detalles de ventas
-router.get('/detallesventas', obtenerDetallesVentas);
+// Ruta para obtener todas las detalles_ventas
+router.get('/detalles_ventas', obtenerDetalles_Ventas);
 
-//Rutas para obtener un detalle de venta por su ID
-router.get('/detallesventas/:id_detalle_venta', obtenerDetalleVentaPorId);
+// Ruta para obtener una detalle_ventas por su ID
+router.get('/detalle_venta/:id_detalles_venta', obtenerDetalles_Venta);
 
-// Ruta para registrar un nuevo detalle de venta
-router.post('/registrardetalleventa', registrarDetalleVenta);
+// Ruta para registrar una nueva detalles_venta
+router.post('/registrardetalles_venta', registrarDetalles_Venta);
 
-// Ruta para eliminar un detalle de venta por su ID
-router.delete("/eliminardetalleventa/:id_detalle_venta", eliminarDetalleVenta);
+// Ruta para actualizar una detalles_venta por su ID
+router.patch('/actualizardetalles_venta/:id_detalles_venta', actualizarDetalle_Venta);
 
-// Ruta para actualizar un detalle de venta por su ID
-router.put("/actualizardetalleventa/:id_detalle_venta", actualizarDetalleVenta);
+// Ruta para eliminar una detalles_venta por su ID
+router.delete('/eliminardetalles_venta/:id_detalles_venta', eliminarDetalle_Venta);
 
-// Ruta para actualizar un detalle de venta por su ID de forma parcial
-router.patch("/actualizardetalleventapatch/:id_detalle_venta", actualizarDetalleVentaPatch);
 
 export default router;

@@ -1,30 +1,17 @@
-import { Router } from "express";
-import { obtenerDetallesCompras } from "../controllers/detalles_compras.controllers.js";
-import { obtenerDetalleCompraPorId } from "../controllers/detalles_compras.controllers.js";
-import { registrarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
-import { eliminarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
-import { actualizarDetalleCompra } from "../controllers/detalles_compras.controllers.js";
-import { actualizarDetalleCompraPatch } from "../controllers/detalles_compras.controllers.js";
-
+import { Router } from 'express';
+import { obtenerDetalles_Compras, obtenerDetalles_Compra, eliminarDetalle_Compra, actualizarDetalle_Compra } from '../Controllers/detalles_compras. controllers.js';
 const router = Router();
 
-//Rutas para obtener todos los detalles de compras
-router.get('/detalles_compras', obtenerDetallesCompras);
+// Ruta para obtener todas las Detalles_Compras
+router.get('/detalles_compras', obtenerDetalles_Compras);
 
-//Rutas para obtener un detalle de compra por su ID
-router.get('/detalles_compras/:id_detalle_compra', obtenerDetalleCompraPorId);
+// Ruta para obtener una compras por su ID
+router.get('/detalles_compra/:id_detalles_compra', obtenerDetalles_Compra);
 
-// Ruta para registrar un nuevo detalle de compra
-router.post('/registrardetallecompra', registrarDetalleCompra);
+// Ruta para eliminar una detalles_compras por su ID
+router.delete('/eliminardetalles_compras/:id_detalles_compras', eliminarDetalle_Compra);
 
-// Ruta para eliminar un detalle de compra por su ID
-router.delete("/eliminardetallecompra/:id_detalle_compra", eliminarDetalleCompra);
-
-// Ruta para actualizar un detalle de compra por su ID
-router.put("/actualizardetallecompra/:id_detalle_compra", actualizarDetalleCompra);
-
-// Ruta para actualizar un detalle de compra por su ID de forma parcial
-router.patch("/actualizardetallecomprapatch/:id_detalle_compra", actualizarDetalleCompraPatch);
-
-
+// Ruta para actualizar una Detalle_Compra por su ID
+router.patch('/actualizarcompra/:id_Detalle_Compra', actualizarDetalle_Compra);
+            
 export default router;

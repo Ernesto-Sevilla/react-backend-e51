@@ -1,29 +1,19 @@
-import { Router } from "express";
-import { obtenerUsuarios } from "../controllers/usuarios.controllers.js";
-import { obtenerUsuarioPorId } from "../controllers/usuarios.controllers.js";
-import { registrarUsuario } from "../controllers/usuarios.controllers.js";
-import { eliminarUsuario } from "../controllers/usuarios.controllers.js";
-import { actualizarUsuario } from "../controllers/usuarios.controllers.js";
-import { actualizarUsuarioPatch } from "../controllers/usuarios.controllers.js";
-
+import { Router } from 'express';
+import { obtenerUsuarios, obtenerUsuario, eliminarUsuario, actualizarUsuario, registrarUsuario } from '../Controllers/usuarios.controllers.js';
 const router = Router();
 
-//Rutas para obtener todos los usuarios
+// Ruta para obtener todas las usuarios
 router.get('/usuarios', obtenerUsuarios);
 
-//Rutas para obtener un usuario por su ID
-router.get('/usuarios/:id_usuario', obtenerUsuarioPorId);
+// Ruta para obtener una usuario por su ID
+router.get('/usuario/:id_usuario', obtenerUsuario);
 
-// Ruta para registrar un nuevo usuario
-router.post('/registrarusuario', registrarUsuario);
-
-// Ruta para eliminar un usuario por su ID
-router.delete("/eliminarusuario/:id_usuario", eliminarUsuario);
+// Ruta para eliminar una usuario por su ID
+router.delete('/eliminarusuario/:id_usuario', eliminarUsuario);
 
 // Ruta para actualizar un usuario por su ID
-router.put("/actualizarusuario/:id_usuario", actualizarUsuario);
-
-// Ruta para actualizar un usuario por su ID de forma parcial
-router.patch("/actualizarusuariopatch/:id_usuario", actualizarUsuarioPatch);
-
+router.patch('/actualizarusuario/:id_usuario', actualizarUsuario);
+            
+// Ruta para registrar una nuevo usuario
+router.post('/registrarusuario', registrarUsuario);
 export default router;

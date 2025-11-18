@@ -1,120 +1,106 @@
-import { pool } from "../../db_connection.js";
+import { pool } from '../../db.connection.js';
 
-// Obtener todas las categorias
+// Obtener todas las categorías
 export const obtenerCategorias = async (req, res) => {
-    try {
-        const [result] = await pool.query("SELECT * FROM Categorias");
-        res.json(result);
-    } catch (error) {
-        return res.status(500).json({
-            mensaje: "Ha ocurrido un error al leer los datos.",
-            error: error
-        });
-    }
-}
+  try {
+    const [result] = await pool.query('SELECT * FROM categorias');
+    res.json(result);
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al leer los datos.',
+      error: error
+    });
+  }
+};
+
 
 // Obtener una categoría por su ID
-export const obtenerCategoriaPorId = async (req, res) => {
-    try {
-        const id_categoria = req.params.id_categoria;
-        const [result] = await pool.query('SELECT * FROM categorias WHERE id_categoria = ?', [id_categoria]);
-        if (result.length <= 0) {
-            return res.status(404).json({
-                mensaje: `Error al leer los datos. ID ${req.params.id} no encontrado.`
-            });
-        }
-        res.json(result[0]);
-    } catch (error) {
-        return res.status(500).json({
-            mensaje: 'Ha ocurrido un error al leer los datos de las categorias.'
-        });
-    }
+export const obtenerCategoria = async (req, res) => {
+  try {
+    const id_categoria = req.params.id_categoria; // Una forma de hacerlo
+    const [result] = await pool.query('SELECT * FROM categorias WHERE id_categoria = ?', [req.params.id_categoria]);
+
+    if (result.length <= 0) {
+      return res.status(404).json({
+        mensaje: `Error al leer los datos. ID ${req.params.id} no encontrado.`
+      });
+    }  // Si no hay coincidencias
+
+    res.json(result[0]);
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al leer los datos de las categorias.'
+    });
+  }
 };
 
 // Registrar una nueva Categoría
 export const registrarCategoria = async (req, res) => {
-    try {
-        const { nombre_categoria, descripcion_categoria } = req.body;
-        const [result] = await pool.query(
-            'INSERT INTO Categorias (nombre_categoria, descripcion_categoria) VALUES (?, ?)',
-            [nombre_categoria, descripcion_categoria]
-        );
-        res.status(201).json({ id_categoria: result.insertId });
-    } catch (error) {
-        return res.status(500).json({
-            mensaje: 'Ha ocurrido un error al registrar la categoría.',
-            error: error
-        });
-    }
+  try {
+    const { nombre_categoria,
+      descripcion_categoria } = req.body;
+
+    const [result] = await pool.query(
+      'INSERT INTO categorias (nombre_categoria, descripcion_categoria) VALUES (?, ?)',
+      [nombre_categoria, descripcion_categoria]
+    );
+
+    res.status(201).json({ id_categoria: result.insertId });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al registrar la categoría.',
+      error: error
+    });
+  }
 };
 
-// Eliminar una categoria por su ID
+// Eliminar una categoria por su ID 
 export const eliminarCategoria = async (req, res) => {
-	try {
-		const id_categoria = req.params.id_categoria;
-		const [result] = await pool.query('DELETE FROM Categorias WHERE id_categoria = ?', [id_categoria]);
+  try {
+    const id_categoria = req.params.id_categoria;
+    const [result] = await pool.query('DELETE FROM categorias WHERE id_categoria = ?', [id_categoria]);
 
-		if (result.affected === 0) {
-			return res.status(404).json({
-				mensaje: "Error al eliminar la categoría. El ID " + id_categoria + " no fue encontrado."
-			});
-		}
-		//Respuesta sin contenido para indicar éxito
-		res.status(204).send();
-	} catch (error) {
-	return res.status(500).json({
-	mensaje: "Ha ocurrido un error al eliminar la categoría.",
-	error: error
-	});
-	}
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar. ID ${id_categoria} no encontrado.`
+      });
+    }
+    // Repuesta sin contenido para indicar éxito
+    res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar la categoría.',
+      error: error
+
+    });
+
+  }
 };
 
-// Actualizar una categoría por su ID
+// Actualizar una categoría por su ID//..........................................................................................
+
+// Controlador para actualizar una categoria por su ID
+
 export const actualizarCategoria = async (req, res) => {
-    try {
-        const id_categoria = req.params.id_categoria;
-        const { nombre_categoria, descripcion_categoria } = req.body;
+  try {
+    const { id_categoria } = req.params;
+    const datos = req.body;
 
-        const [result] = await pool.query(
-            'UPDATE Categorias SET nombre_categoria = ?, descripcion_categoria = ? WHERE id_categoria = ?',
-            [nombre_categoria, descripcion_categoria, id_categoria]
-        );
 
-        if (result.affected === 0) {
-            return res.status(404).json({
-                mensaje: "Error al actualizar la categoría. El ID " + id_categoria + " no fue encontrado."
-            });
-        }
-
-        res.status(204).send();
-    } catch (error) {
-        return res.status(500).json({
-            mensaje: "Ha ocurrido un error al actualizar la categoría.",
-            error: error
-        });
+    const [result] = await pool.query(
+      'UPDATE categorias SET ? WHERE id_categoria = ?',
+      [datos, id_categoria]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: ` Categoria con ID ${id_categoria} no encontrada.`
+      });
     }
+    res.status(200).json({
+      mensaje: `Categoria con ID ${id_categoria} actualizada.`
+    });
+  } catch (error) {
+    return res.status(500).json({ mensaje: 'Error al actualizar la categoria.', error });
+  }
 };
 
-// Controlador para actualizar parcialmente una categoria por su ID (Usando PATCH)
-export const actualizarCategoriaPatch = async (req, res) => {
-    try {
-        const { id_categoria } = req.params;
-        const datos = req.body;
-
-        const [result] = await pool.query(
-            'UPDATE Categorias SET ? WHERE id_categoria = ?',
-            [datos, id_categoria]
-        );
-        if (result.affectedRows === 0) {
-            return res.status(404).json({
-                mensaje: "Error al actualizar la categoría. El ID " + id_categoria + " no fue encontrado."
-            });
-        }
-        res.status(200).json({
-            mensaje: "Categoría con ID " + id_categoria + "actualizada exitosamente."
-        });
-    } catch (error) {
-        res.status(500).json({
-            mensaje: "Ha ocurrido un error al actualizar la categoría.", error});
-    }
-};
